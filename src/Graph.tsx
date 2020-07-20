@@ -1,3 +1,4 @@
+ 
 import React, { Component } from 'react';
 import { Table } from '@jpmorganchase/perspective';
 import { ServerRespond } from './DataStreamer';
@@ -26,10 +27,10 @@ class Graph extends Component<IProps, {}> {
       price_abc: 'float',
       price_def: 'float',
       ratio: 'float',
-      timestamp: 'data',
+      timestamp: 'date',
       upper_bound: 'float',
       lower_bound: 'float',
-      trigger_alert:'float',
+      trigger_alert: 'float'
     };
 
     if (window.perspective && window.perspective.worker()) {
@@ -39,12 +40,12 @@ class Graph extends Component<IProps, {}> {
       // Load the `table` in the `<perspective-viewer>` DOM reference.
       elem.load(this.table);
       elem.setAttribute('view', 'y_line');
-      elem.setAttribute('column-pivots', '["timestamp"]');
-      elem.setAttribute('columns', '["ratio","lower_bound", "upper_bound", "trigger_alert"]');
+      elem.setAttribute('row-pivots', '["timestamp"]');
+      elem.setAttribute('columns', '["ratio", "lower_bound", "upper_bound", "trigger_alert"]');
       elem.setAttribute('aggregates', JSON.stringify({
         price_abc: 'avg',
         price_def: 'avg',
-        ratio: 'avg',
+        ratio:'avg',
         timestamp: 'distinct count',
         upper_bound: 'avg',
         lower_bound: 'avg',
@@ -55,9 +56,9 @@ class Graph extends Component<IProps, {}> {
 
   componentDidUpdate() {
     if (this.table) {
-      this.table.update(
+      this.table.update([
         DataManipulator.generateRow(this.props.data),
-      );
+      ]);
     }
   }
 }
